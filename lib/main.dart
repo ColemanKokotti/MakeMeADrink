@@ -1,16 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:makemeadrink/screens/start_screen.dart';
+import 'package:firebase_auth/app.dart';  
+import 'package:user_repository/user_repository.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(
-        MaterialApp(
-          home: StartScreen(),
-        ),
-      ));
+  await Firebase.initializeApp();
+  
+ runApp(MyApp(FirebaseUserRepo()));
 }
+
+
