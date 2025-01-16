@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:makemeadrink/text/text.dart';
+import 'package:makemeadrink/text/custom_text.dart';
 import 'package:makemeadrink/backgroundcolor/background_color.dart';
 import 'package:makemeadrink/button/start_app_button.dart';
 
