@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "134000251102",
+    "project_id": "makemeadrink-c19cd",
+    "storage_bucket": "makemeadrink-c19cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134000251102:android:9c657b613bb45753ee724f",
+        "android_client_info": {
+          "package_name": "com.example.makemeadrink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4PWuC01J3py2IP5704MGGK-YB7HAF-Bk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
