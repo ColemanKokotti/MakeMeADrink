@@ -10,9 +10,8 @@ class StartScreen extends StatelessWidget {
     return Scaffold(
       body: BackgraoundColor(
         [
-          Color.fromARGB(255, 255, 0, 127),
-          Color.fromARGB(255, 50, 205, 50),
-          Color.fromARGB(255, 30, 144, 255)
+          Colors.teal,
+          Colors.blueGrey
         ],
         child: Center(
           child: Column(

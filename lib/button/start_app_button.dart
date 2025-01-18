@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:makemeadrink/screens/cocktail_list_screen.dart';
+import '../screens/looding_screen.dart';
 
 class StartApp extends StatefulWidget {
   const StartApp({super.key});
@@ -13,7 +13,7 @@ class _StartAppButton extends State<StartApp> {
   void startApp() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CocktailListScreen()),
+      MaterialPageRoute(builder: (context) => SplashScreen()),
     );
   }
 

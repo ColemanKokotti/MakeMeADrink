@@ -10,10 +10,11 @@ class CocktailDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.tealAccent,
         title: Center(
           child: Text(
             "How To Do The Drink",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20,color: Colors.white),
           ),
         ),
       ),

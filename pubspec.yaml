@@ -61,6 +61,8 @@ flutter:
   assets:
     - assets/images/startScreenImage.png
     - assets/json/cocktails.json
+    - assets/images/icon_list.png
+    - assets/images/cocktail_favorites_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
