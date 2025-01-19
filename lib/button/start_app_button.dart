@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makemeadrink/screens/auth/welcome_screen.dart';
 import '../screens/looding_screen.dart';
 
 class StartApp extends StatefulWidget {
@@ -13,7 +14,7 @@ class _StartAppButton extends State<StartApp> {
   void startApp() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SplashScreen()),
+      MaterialPageRoute(builder: (context) => WelcomeScreen()),
     );
   }
 

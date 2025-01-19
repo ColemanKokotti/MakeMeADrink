@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemeadrink/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:makemeadrink/screens/auth/start_screen.dart';
 import 'package:makemeadrink/screens/auth/welcome_screen.dart';
+import 'package:makemeadrink/screens/looding_screen.dart';
 import 'blocs/sign_in_bloc/sign_in_bloc.dart';
-import 'screens/home/home_screen.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});
@@ -11,6 +12,7 @@ class MyAppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
 			title: 'Firebase Auth',
 			theme: ThemeData(
 				colorScheme: const ColorScheme.light(
@@ -32,10 +34,10 @@ class MyAppView extends StatelessWidget {
 							create: (context) => SignInBloc(
 								userRepository: context.read<AuthenticationBloc>().userRepository
 							),
-							child: const HomeScreen(),
+							child: const StartScreen(),
 						);
 					} else {
-						return const WelcomeScreen();
+						return const SplashScreen();
 					}
 				}
 			)
