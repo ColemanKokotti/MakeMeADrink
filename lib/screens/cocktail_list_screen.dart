@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:makemeadrink/api_calls/cocktail_data.dart';
+import 'package:makemeadrink/screens/auth/welcome_screen.dart';
 import 'package:makemeadrink/screens/cocktail_detailed_screen.dart';
 import 'package:makemeadrink/list_item/cocktail_list_item.dart';
+import 'package:makemeadrink/services/firebase_service.dart';  // Import the service
 
 class CocktailListScreen extends StatefulWidget {
   final List<Cocktail> cocktails;
@@ -21,12 +23,22 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
   bool _showNonAlcoholic = true;
   String _selectedCategory = 'All';
   final List<Color> screenBackgroundColor = [Colors.teal, Colors.blueGrey];
+  final FirebaseService _firebaseService = FirebaseService();  // Firebase service instance
 
   @override
   void initState() {
     super.initState();
     filteredCocktails = widget.cocktails;
     searchController.addListener(_filterCocktails);
+    _loadFavorites();
+  }
+
+  // Load favorites from Firestore
+  Future<void> _loadFavorites() async {
+    List<String> userFavorites = await _firebaseService.getFavorites();
+    setState(() {
+      favorites = userFavorites;
+    });
   }
 
   void _showFilterDialog() {
@@ -34,8 +46,8 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.teal ,
-          title: const Text('Filter Cocktails', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+          backgroundColor: Colors.teal,
+          title: const Text('Filter Cocktails', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return SingleChildScrollView(
@@ -43,9 +55,9 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                    const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     CheckboxListTile(
-                      title: const Text('Alcoholic' ,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                      title: const Text('Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                       value: _showAlcoholic,
                       onChanged: (bool? value) {
                         setState(() {
@@ -54,7 +66,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     CheckboxListTile(
-                      title: const Text('Non-Alcoholic', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                      title: const Text('Non-Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                       value: _showNonAlcoholic,
                       onChanged: (bool? value) {
                         setState(() {
@@ -63,7 +75,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                    const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     DropdownButton<String>(
                       value: _selectedCategory,
                       isExpanded: true,
@@ -95,7 +107,6 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         });
                       },
                     )
-
                   ],
                 ),
               );
@@ -103,7 +114,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Reset' , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+              child: const Text('Reset', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
               onPressed: () {
                 setState(() {
                   _showAlcoholic = true;
@@ -115,7 +126,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
               },
             ),
             TextButton(
-              child: const Text('Apply' ,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+              child: const Text('Apply', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
               onPressed: () {
                 _filterCocktails();
                 Navigator.of(context).pop();
@@ -160,13 +171,25 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: Container(
-          decoration: BoxDecoration(
-           color: Colors.teal,
-          ),
+          decoration: BoxDecoration(color: Colors.teal),
           child: AppBar(
+            
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text('Drink Time'),
+            leading: null,
+            actions: [
+        IconButton(
+          icon: const Icon(Icons.logout), // Icona di logout
+          onPressed: () {
+            // Naviga alla WelcomeScreen quando il pulsante di logout è premuto
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => WelcomeScreen()), // Assicurati di importare la WelcomeScreen
+            );
+          },
+        ),
+      ],
           ),
         ),
       ),
@@ -230,7 +253,10 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   return CocktailListItem(
                     cocktail: cocktail,
                     isFavorite: isFavorite,
-                    onFavoriteToggle: toggleFavorite,
+                    onFavoriteToggle: (id) {
+                      _firebaseService.toggleFavorite(id, !isFavorite);  // Call Firestore method
+                      _loadFavorites();  // Reload favorites after change
+                    },
                     onTap: () {
                       Navigator.push(
                         context,
@@ -262,15 +288,5 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         ],
       ),
     );
-  }
-
-  void toggleFavorite(String id) {
-    setState(() {
-      if (favorites.contains(id)) {
-        favorites.remove(id);
-      } else {
-        favorites.add(id);
-      }
-    });
   }
 }
