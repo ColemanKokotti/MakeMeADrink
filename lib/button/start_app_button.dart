@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:makemeadrink/screens/auth/welcome_screen.dart';
-import '../screens/looding_screen.dart';
 
 class StartApp extends StatefulWidget {
   const StartApp({super.key});
