@@ -10,6 +10,7 @@ void main() {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(
         MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: StartScreen(),
         ),
       ));

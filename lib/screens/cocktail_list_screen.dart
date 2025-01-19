@@ -34,7 +34,8 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Filter Cocktails'),
+          backgroundColor: Colors.teal ,
+          title: const Text('Filter Cocktails', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return SingleChildScrollView(
@@ -42,9 +43,9 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                     CheckboxListTile(
-                      title: const Text('Alcoholic'),
+                      title: const Text('Alcoholic' ,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                       value: _showAlcoholic,
                       onChanged: (bool? value) {
                         setState(() {
@@ -53,7 +54,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     CheckboxListTile(
-                      title: const Text('Non-Alcoholic'),
+                      title: const Text('Non-Alcoholic', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                       value: _showNonAlcoholic,
                       onChanged: (bool? value) {
                         setState(() {
@@ -62,11 +63,13 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                     DropdownButton<String>(
                       value: _selectedCategory,
                       isExpanded: true,
-                      items: ['All',
+                      dropdownColor: Colors.teal,
+                      items: [
+                        'All',
                         'Cocktail',
                         'Shot',
                         'Coffee / Tea',
@@ -76,11 +79,14 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         'Cocoa',
                         'Homemade Liqueur',
                         'Beer',
-                        'Other / Unknown']
-                          .map((String value) {
+                        'Other / Unknown'
+                      ].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -88,7 +94,8 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                           _selectedCategory = newValue!;
                         });
                       },
-                    ),
+                    )
+
                   ],
                 ),
               );
@@ -96,7 +103,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Reset'),
+              child: const Text('Reset' , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
               onPressed: () {
                 setState(() {
                   _showAlcoholic = true;
@@ -108,7 +115,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
               },
             ),
             TextButton(
-              child: const Text('Apply'),
+              child: const Text('Apply' ,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
               onPressed: () {
                 _filterCocktails();
                 Navigator.of(context).pop();
@@ -195,12 +202,13 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
                       icon: const Icon(Icons.filter_list),
                       onPressed: _showFilterDialog,
+                      color: Colors.teal,
                     ),
                   ),
                 ],
