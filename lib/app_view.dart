@@ -27,20 +27,23 @@ class MyAppView extends StatelessWidget {
 					outline: Color(0xFF424242)
         ),
 			),
-			home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-				builder: (context, state) {
-					if(state.status == AuthenticationStatus.authenticated) {
-						return BlocProvider(
-							create: (context) => SignInBloc(
-								userRepository: context.read<AuthenticationBloc>().userRepository
-							),
-							child: const StartScreen(),
-						);
-					} else {
-						return const SplashScreen();
-					}
-				}
-			)
+				home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+						builder: (context, state) {
+							if (state.status == AuthenticationStatus.authenticated) {
+								return const StartScreen();
+							} else if (state.status == AuthenticationStatus.unauthenticated) {
+								return BlocProvider(
+									create: (context) => SignInBloc(
+											userRepository: context.read<AuthenticationBloc>().userRepository
+									),
+									child: const StartScreen(),
+								);
+							} else {
+								// AuthenticationStatus.unknown
+								return const SplashScreen();
+							}
+						}
+				)
 		);
   }
 }
