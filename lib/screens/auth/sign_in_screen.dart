@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemeadrink/screens/auth/components/my_text_field.dart';
+import 'package:makemeadrink/screens/looding_screen.dart';
 
 import '../../blocs/sign_in_bloc/sign_in_bloc.dart';
 
@@ -28,6 +29,10 @@ class _SignInScreenState extends State<SignInScreen> {
 				if(state is SignInSuccess) {
 					setState(() {
 					  signInRequired = false;
+						Navigator.push(
+							context,
+							MaterialPageRoute(builder: (context) => SplashScreen()),
+						);
 					});
 				} else if(state is SignInProcess) {
 					setState(() {

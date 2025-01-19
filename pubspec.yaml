@@ -32,3 +32,4 @@ flutter:
     - assets/json/cocktails.json
     - assets/images/icon_list.png
     - assets/images/cocktail_favorites_icon.png
+    - assets/images/startScreenImage.png
