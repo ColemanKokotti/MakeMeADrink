@@ -13,15 +13,14 @@ class CocktailListScreen extends StatefulWidget {
 }
 
 class _CocktailListScreenState extends State<CocktailListScreen> {
-  List<Cocktail> filteredCocktails = [];
+  late List<Cocktail> filteredCocktails;
   List<String> favorites = [];
   TextEditingController searchController = TextEditingController();
   int _selectedIndex = 0;
-
-  final List<Color> screenBackgroundColor = [
-    Colors.teal,
-    Colors.blueGrey
-  ];
+  bool _showAlcoholic = true;
+  bool _showNonAlcoholic = true;
+  String _selectedCategory = 'All';
+  final List<Color> screenBackgroundColor = [Colors.teal, Colors.blueGrey];
 
   @override
   void initState() {
@@ -30,14 +29,95 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
     searchController.addListener(_filterCocktails);
   }
 
-  void toggleFavorite(String id) {
-    setState(() {
-      if (favorites.contains(id)) {
-        favorites.remove(id);
-      } else {
-        favorites.add(id);
-      }
-    });
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Filter Cocktails'),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    CheckboxListTile(
+                      title: const Text('Alcoholic'),
+                      value: _showAlcoholic,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _showAlcoholic = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Non-Alcoholic'),
+                      value: _showNonAlcoholic,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _showNonAlcoholic = value!;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    DropdownButton<String>(
+                      value: _selectedCategory,
+                      isExpanded: true,
+                      items: ['All',
+                        'Cocktail',
+                        'Shot',
+                        'Coffee / Tea',
+                        'Ordinary Drink',
+                        'Shake',
+                        'Punch / Party Drink',
+                        'Cocoa',
+                        'Homemade Liqueur',
+                        'Beer',
+                        'Other / Unknown']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedCategory = newValue!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Reset'),
+              onPressed: () {
+                setState(() {
+                  _showAlcoholic = true;
+                  _showNonAlcoholic = true;
+                  _selectedCategory = 'All';
+                });
+                _filterCocktails();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Apply'),
+              onPressed: () {
+                _filterCocktails();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _filterCocktails() {
@@ -46,7 +126,9 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
       filteredCocktails = widget.cocktails.where((cocktail) {
         final matchesQuery = cocktail.name.toLowerCase().contains(query);
         final matchesFavorites = _selectedIndex == 0 || favorites.contains(cocktail.id);
-        return matchesQuery && matchesFavorites;
+        final matchesAlcoholFilter = cocktail.isAlcoholic ? _showAlcoholic : _showNonAlcoholic;
+        final matchesCategory = _selectedCategory == 'All' || cocktail.category == _selectedCategory;
+        return matchesQuery && matchesFavorites && matchesAlcoholFilter && matchesCategory;
       }).toList();
     });
   }
@@ -72,11 +154,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         preferredSize: const Size.fromHeight(80),
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: screenBackgroundColor,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+           color: Colors.teal,
           ),
           child: AppBar(
             backgroundColor: Colors.transparent,
@@ -97,18 +175,35 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search cocktails...',
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search cocktails...',
+                        prefixIcon: const Icon(Icons.search),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      ),
+                    ),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                ),
+                  const SizedBox(width: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.filter_list),
+                      onPressed: _showFilterDialog,
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -144,19 +239,30 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color.fromARGB(255, 196, 164, 132),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/icon_list.png', height: 50, width: 50),
+            icon: Image.asset('assets/images/icon_list.png', height: 40, width: 40),
             label: 'Cocktails',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/cocktail_favorites_icon.png', height: 50, width: 50),
+            icon: Image.asset('assets/images/cocktail_favorites_icon.png', height: 40, width: 40),
             label: 'Favorites',
           ),
         ],
       ),
     );
+  }
+
+  void toggleFavorite(String id) {
+    setState(() {
+      if (favorites.contains(id)) {
+        favorites.remove(id);
+      } else {
+        favorites.add(id);
+      }
+    });
   }
 }

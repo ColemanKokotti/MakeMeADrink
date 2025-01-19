@@ -51,11 +51,12 @@ class _CocktailListItemState extends State<CocktailListItem> {
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
+          color: Colors.black,
         ),
         child: Material(
           elevation: _isExpanded ? 10.0 : 5.0,
           borderRadius: BorderRadius.circular(15),
+          color: Color.fromARGB(255, 176, 196, 171),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -71,8 +72,9 @@ class _CocktailListItemState extends State<CocktailListItem> {
                 child: Text(
                   widget.cocktail.name,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -91,7 +93,7 @@ class _CocktailListItemState extends State<CocktailListItem> {
                           Expanded(
                             child: Text(
                               ingredient,
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 8),
                             ),
                           ),
                         ],
@@ -104,7 +106,7 @@ class _CocktailListItemState extends State<CocktailListItem> {
                 IconButton(
                   icon: Icon(
                     widget.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: widget.isFavorite ? Colors.red : Colors.grey,
+                    color: widget.isFavorite ? Colors.red : Colors.black,
                   ),
                   onPressed: () => widget.onFavoriteToggle(widget.cocktail.id),
                 ),

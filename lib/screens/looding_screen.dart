@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
       final List<dynamic> parsed = json.decode(data);
       final cocktails = parsed.map((json) => Cocktail.fromJson(json)).toList();
 
-      await Future.delayed(const Duration(seconds: 3)); // Simula il caricamento
+      await Future.delayed(const Duration(seconds: 3));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

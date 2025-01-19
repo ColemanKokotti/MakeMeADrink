@@ -6,12 +6,16 @@ class Cocktail {
   final String name;
   final String imageUrl;
   final List<String> ingredients;
+  final bool isAlcoholic;
+  final String category;
 
   Cocktail({
     required this.id,
     required this.name,
     required this.imageUrl,
     required this.ingredients,
+    required this.isAlcoholic,
+    required this.category,
   });
 
 
@@ -21,6 +25,8 @@ class Cocktail {
       name: json['strDrink'],
       imageUrl: json['strDrinkThumb'],
       ingredients: [],
+      isAlcoholic: json['strAlcoholic'] == 'Alcoholic',
+      category: json['strCategory'] ?? 'Other',
     );
   }
 
