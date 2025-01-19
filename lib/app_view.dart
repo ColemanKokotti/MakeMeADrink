@@ -16,15 +16,15 @@ class MyAppView extends StatelessWidget {
 			title: 'Firebase Auth',
 			theme: ThemeData(
 				colorScheme: const ColorScheme.light(
-          surface: Colors.white,
+          surface: Colors.teal,
           onSurface: Colors.black,
-          primary: Color.fromRGBO(206, 147, 216, 1),
+          primary: Colors.tealAccent,
           onPrimary: Colors.black,
-          secondary: Color.fromRGBO(244, 143, 177, 1),
+          secondary: Colors.tealAccent,
           onSecondary: Colors.white,
-					tertiary: Color.fromRGBO(255, 204, 128, 1),
+					tertiary: Colors.tealAccent,
           error: Colors.red,
-					outline: Color(0xFF424242)
+					outline: Colors.teal
         ),
 			),
 				home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
