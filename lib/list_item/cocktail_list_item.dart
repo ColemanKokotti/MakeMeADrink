@@ -123,7 +123,7 @@ class _CocktailListItemState extends State<CocktailListItem> {
     });
 
     if (_isExpanded) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 5), () {
         setState(() {
           _isExpanded = false;
         });
