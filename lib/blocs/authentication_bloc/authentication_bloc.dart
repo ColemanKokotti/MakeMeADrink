@@ -11,21 +11,21 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final UserRepository userRepository;
   late final StreamSubscription<User?> _userSubscription;
 
-  AuthenticationBloc({
-    required this.userRepository
-  }) : super(const AuthenticationState.unknown()) {
-    _userSubscription = userRepository.user.listen((user) {
-      print("User state changed: ${user?.uid}");
-      add(AuthenticationUserChanged(user));
-    });
-
+  AuthenticationBloc({required this.userRepository}) : super(const AuthenticationState.unknown()) {
     on<AuthenticationUserChanged>((event, emit) {
-      print("Processing AuthenticationUserChanged: ${event.user?.uid}");
-      if(event.user != null) {
+      if (event.user != null) {
         emit(AuthenticationState.authenticated(event.user!));
       } else {
         emit(const AuthenticationState.unauthenticated());
       }
+    });
+
+    _userSubscription = userRepository.user.listen((user) {
+      add(AuthenticationUserChanged(user));
+    });
+
+    userRepository.user.first.then((user) {
+      add(AuthenticationUserChanged(user));
     });
   }
 

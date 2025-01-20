@@ -5,10 +5,8 @@ class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Get the current user's ID
   String get _userId => _auth.currentUser?.uid ?? '';
 
-  // Method to get the user's favorite cocktails from Firestore
   Future<List<String>> getFavorites() async {
     try {
       final doc = await _firestore.collection('users').doc(_userId).get();

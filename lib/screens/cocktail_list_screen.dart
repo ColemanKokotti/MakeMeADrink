@@ -3,7 +3,7 @@ import 'package:makemeadrink/api_calls/cocktail_data.dart';
 import 'package:makemeadrink/screens/auth/welcome_screen.dart';
 import 'package:makemeadrink/screens/cocktail_detailed_screen.dart';
 import 'package:makemeadrink/list_item/cocktail_list_item.dart';
-import 'package:makemeadrink/services/firebase_service.dart';  // Import the service
+import 'package:makemeadrink/services/firebase_service.dart';
 
 class CocktailListScreen extends StatefulWidget {
   final List<Cocktail> cocktails;
@@ -180,12 +180,11 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
             leading: null,
             actions: [
         IconButton(
-          icon: const Icon(Icons.logout), // Icona di logout
+          icon: const Icon(Icons.logout),
           onPressed: () {
-            // Naviga alla WelcomeScreen quando il pulsante di logout è premuto
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => WelcomeScreen()), // Assicurati di importare la WelcomeScreen
+              MaterialPageRoute(builder: (context) => WelcomeScreen()),
             );
           },
         ),
