@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:makemeadrink/screens/looding_screen.dart';
+import 'package:makemeadrink/screens/splash_screen.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
