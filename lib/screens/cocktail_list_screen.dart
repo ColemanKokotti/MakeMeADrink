@@ -201,6 +201,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text('Drink Time'),
+            leading: null,
             actions: [
               IconButton(
                 icon: const Icon(Icons.logout),
