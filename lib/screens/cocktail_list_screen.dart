@@ -23,7 +23,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
   bool _showNonAlcoholic = true;
   String _selectedCategory = 'All';
   final List<Color> screenBackgroundColor = [Colors.teal, Colors.blueGrey];
-  final FirebaseService _firebaseService = FirebaseService();  // Firebase service instance
+  final FirebaseService _firebaseService = FirebaseService();
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
     _loadFavorites();
   }
 
-  // Load favorites from Firestore
   Future<void> _loadFavorites() async {
     List<String> userFavorites = await _firebaseService.getFavorites();
     setState(() {
@@ -173,22 +172,21 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         child: Container(
           decoration: BoxDecoration(color: Colors.teal),
           child: AppBar(
-            
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text('Drink Time'),
-            leading: null,
             actions: [
-        IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => WelcomeScreen()),
-            );
-          },
-        ),
-      ],
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -237,7 +235,55 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
               ),
             ),
             Expanded(
-              child: GridView.builder(
+              child: filteredCocktails.isEmpty
+                  ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_selectedIndex == 1 && favorites.isEmpty) ...[
+                      Icon(Icons.favorite_border, size: 64, color: Colors.white),
+                      SizedBox(height: 16),
+                      Text(
+                        'Nessun cocktail preferito',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Aggiungi i tuoi cocktail preferiti toccando l\'icona del cuore',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ] else ...[
+                      Icon(Icons.search_off, size: 64, color: Colors.white),
+                      SizedBox(height: 16),
+                      Text(
+                        'Nessun cocktail trovato',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Prova a modificare i filtri o il testo di ricerca',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              )
+                  : GridView.builder(
                 padding: const EdgeInsets.all(10),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -253,8 +299,8 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                     cocktail: cocktail,
                     isFavorite: isFavorite,
                     onFavoriteToggle: (id) {
-                      _firebaseService.toggleFavorite(id, !isFavorite);  // Call Firestore method
-                      _loadFavorites();  // Reload favorites after change
+                      _firebaseService.toggleFavorite(id, !isFavorite);
+                      _loadFavorites();
                     },
                     onTap: () {
                       Navigator.push(
