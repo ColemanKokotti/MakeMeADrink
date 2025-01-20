@@ -1,42 +1,49 @@
-import 'dart:developer';
+import 'dart:developer'; // Imports a module for logging messages.
 
-import 'package:bloc/bloc.dart';
+import 'package:bloc/bloc.dart'; // Imports the BLoC package.
 
-class SimpleBlocObserver extends BlocObserver{
+class SimpleBlocObserver extends BlocObserver { 
+  // A class to monitor changes in BLoC instances.
+
   @override
   void onCreate(BlocBase bloc) {
-    super.onCreate(bloc);
+    super.onCreate(bloc); 
     log('onCreate -- bloc: ${bloc.runtimeType}');
+    // Logs when a BLoC is created.
   }
 
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
     log('onEvent -- bloc: ${bloc.runtimeType}, event: $event');
+    // Logs every event processed by a BLoC.
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     log('onChange -- bloc: ${bloc.runtimeType}, change: $change');
+    // Logs state changes in a BLoC.
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     log('onError -- bloc: ${bloc.runtimeType}, error: $error');
     super.onError(bloc, error, stackTrace);
+    // Logs errors emitted by a BLoC.
   }
 
   @override
   void onClose(BlocBase bloc) {
     super.onClose(bloc);
     log('onClose -- bloc: ${bloc.runtimeType}');
+    // Logs when a BLoC is closed.
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
     log('onTransition -- bloc: ${bloc.runtimeType}, transition: $transition');
+    // Logs state transitions in a BLoC.
   }
-
 }

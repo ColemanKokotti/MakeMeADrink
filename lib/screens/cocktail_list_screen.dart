@@ -4,9 +4,11 @@ import 'package:makemeadrink/screens/auth/welcome_screen.dart';
 import 'package:makemeadrink/screens/cocktail_detailed_screen.dart';
 import 'package:makemeadrink/list_item/cocktail_list_item.dart';
 import 'package:makemeadrink/services/firebase_service.dart';
+// Imports required packages, screens, and services.
 
 class CocktailListScreen extends StatefulWidget {
   final List<Cocktail> cocktails;
+  // Takes a list of cocktails as input.
 
   const CocktailListScreen({super.key, required this.cocktails});
 
@@ -16,25 +18,43 @@ class CocktailListScreen extends StatefulWidget {
 
 class _CocktailListScreenState extends State<CocktailListScreen> {
   late List<Cocktail> filteredCocktails;
+  // Holds the filtered list of cocktails.
+
   List<String> favorites = [];
+  // Stores the user's favorite cocktail IDs.
+
   TextEditingController searchController = TextEditingController();
+  // Controls the search bar input.
+
   int _selectedIndex = 0;
+  // Tracks the current bottom navigation tab.
+
   bool _showAlcoholic = true;
   bool _showNonAlcoholic = true;
   String _selectedCategory = 'All';
+  // Tracks filter settings.
+
   final List<Color> screenBackgroundColor = [Colors.teal, Colors.blueGrey];
-  final FirebaseService _firebaseService = FirebaseService();  // Firebase service instance
+  // Gradient background colors.
+
+  final FirebaseService _firebaseService = FirebaseService();
+  // Firebase service for interacting with Firestore.
 
   @override
   void initState() {
     super.initState();
     filteredCocktails = widget.cocktails;
+    // Initialize the filtered cocktail list with all cocktails.
+
     searchController.addListener(_filterCocktails);
+    // Attach a listener to update filters when the search input changes.
+
     _loadFavorites();
+    // Load favorite cocktails from Firestore.
   }
 
-  // Load favorites from Firestore
   Future<void> _loadFavorites() async {
+    // Fetches favorite cocktail IDs from Firestore.
     List<String> userFavorites = await _firebaseService.getFavorites();
     setState(() {
       favorites = userFavorites;
@@ -42,6 +62,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
   }
 
   void _showFilterDialog() {
+    // Opens a dialog for setting filters.
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -55,6 +76,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Alcohol content filters.
                     const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     CheckboxListTile(
                       title: const Text('Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
@@ -75,6 +97,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
+                    // Category filter dropdown.
                     const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     DropdownButton<String>(
                       value: _selectedCategory,
@@ -91,14 +114,11 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         'Cocoa',
                         'Homemade Liqueur',
                         'Beer',
-                        'Other / Unknown'
+                        'Other / Unknown',
                       ].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          child: Text(value, style: TextStyle(color: Colors.white)),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -106,13 +126,14 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                           _selectedCategory = newValue!;
                         });
                       },
-                    )
+                    ),
                   ],
                 ),
               );
             },
           ),
           actions: [
+            // Reset and apply filter buttons.
             TextButton(
               child: const Text('Reset', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
               onPressed: () {
@@ -139,6 +160,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
   }
 
   void _filterCocktails() {
+    // Applies filters to the cocktail list.
     setState(() {
       final query = searchController.text.toLowerCase();
       filteredCocktails = widget.cocktails.where((cocktail) {
@@ -152,6 +174,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
   }
 
   void _onItemTapped(int index) {
+    // Updates the bottom navigation tab and filters.
     setState(() {
       _selectedIndex = index;
       _filterCocktails();
@@ -160,6 +183,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
 
   @override
   void dispose() {
+    // Clean up resources.
     searchController.removeListener(_filterCocktails);
     searchController.dispose();
     super.dispose();
@@ -167,28 +191,27 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Builds the UI for the cocktail list screen.
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: Container(
           decoration: BoxDecoration(color: Colors.teal),
           child: AppBar(
-            
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text('Drink Time'),
-            leading: null,
             actions: [
-        IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => WelcomeScreen()),
-            );
-          },
-        ),
-      ],
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -202,6 +225,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         ),
         child: Column(
           children: [
+            // Search bar and filter button.
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -236,6 +260,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                 ],
               ),
             ),
+            // Display filtered cocktails in a grid.
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(10),
@@ -253,8 +278,8 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                     cocktail: cocktail,
                     isFavorite: isFavorite,
                     onFavoriteToggle: (id) {
-                      _firebaseService.toggleFavorite(id, !isFavorite);  // Call Firestore method
-                      _loadFavorites();  // Reload favorites after change
+                      _firebaseService.toggleFavorite(id, !isFavorite);
+                      _loadFavorites();
                     },
                     onTap: () {
                       Navigator.push(
@@ -272,7 +297,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 196, 164, 132),
+        backgroundColor: const Color.fromARGB(255, 196, 164, 132),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: [
