@@ -8,13 +8,18 @@ class CocktailDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.tealAccent,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         title: Center(
           child: Text(
             "How To Do The Drink",
-            style: TextStyle(fontSize: 20,color: Colors.white),
+            style: TextStyle(
+              fontSize: 20,
+              color: theme.textTheme.labelLarge?.color ?? Colors.white,
+            ),
           ),
         ),
       ),

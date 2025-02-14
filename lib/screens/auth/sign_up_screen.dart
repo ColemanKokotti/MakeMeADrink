@@ -8,7 +8,10 @@ import '../../blocs/sign_up_bloc/sign_up_bloc.dart';
 import 'components/my_text_field.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+	final String selectedTheme;
+	final ValueChanged<String?> onThemeSelect;
+  const SignUpScreen({super.key,required this.selectedTheme,
+		required this.onThemeSelect,});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -38,7 +41,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 					  signUpRequired = false;
             Navigator.push(
 							context,
-							MaterialPageRoute(builder: (context) => SplashScreen()),
+							MaterialPageRoute(builder: (context) => SplashScreen(
+								selectedTheme: widget.selectedTheme,
+								onThemeSelect: widget.onThemeSelect,)),
 						);
 					});
 					// Navigator.pop(context);

@@ -1,38 +1,58 @@
-import 'dart:developer';
-import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../button/change_theme_button.dart';
-import 'package:makemeadrink/providers/theme_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  final String selectedTheme;
+  final ValueChanged<String?> onThemeSelect;
+
+  const SettingsScreen({
+    Key? key,
+    required this.selectedTheme,
+    required this.onThemeSelect,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
-            title: const Text("Settings"),
-          ),
-          body: Center(
-            child: ChangeThemeButton(
-              onThemeChanged: (bool isDark) {
-                themeProvider.toggleTheme();
-                if (isDark) {
-                  printToConsole('Dark Theme is set');
-                } else {
-                  printToConsole('Default Theme is set');
-                }
+    final theme = Theme.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings', style: theme.textTheme.labelLarge),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            DropdownButton<String>(
+              value: selectedTheme,
+              onChanged: (newTheme) {
+                onThemeSelect(newTheme);
               },
+              style: TextStyle(
+                color: theme.textTheme.labelLarge?.color,
+                fontSize: theme.textTheme.labelLarge?.fontSize,
+              ),
+              iconEnabledColor: theme.iconTheme.color,
+              dropdownColor: theme.scaffoldBackgroundColor,
+              items: <String>['default', 'light', 'dark', 'pastel', 'vintage', 'neon']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Row(
+                    children: [
+                      Text(value.toUpperCase()),
+                      SizedBox(width: 15),
+                      if (value == selectedTheme)
+                        Icon(
+                          Icons.circle_rounded,
+                          color: theme.iconTheme.color,
+                        ),
+                    ],
+                  ),
+                );
+              }).toList(),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }
-
-

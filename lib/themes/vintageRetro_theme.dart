@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 
-class ThemeVintageRetro {
-  static ThemeData get theme {
-    return ThemeData(
-      primaryColor: Colors.orange,
-      scaffoldBackgroundColor: Colors.brown[50],
-      appBarTheme: AppBarTheme(
-        color: Colors.brown,
-      ),
-      iconTheme: IconThemeData(color: Colors.orangeAccent),
-      buttonTheme: ButtonThemeData(
-        buttonColor: Colors.brown,
-        textTheme: ButtonTextTheme.primary,
-      ),
-      brightness: Brightness.light,
-    );
-  }
-}
+final ThemeData vintageRetroTheme = ThemeData(
+  primaryColor: Colors.orange,
+  scaffoldBackgroundColor: Colors.brown[50],
+  appBarTheme: AppBarTheme(
+    color: Colors.brown,
+  ),
+  iconTheme: IconThemeData(color: Colors.orangeAccent),
+  buttonTheme: ButtonThemeData(
+    buttonColor: Colors.brown,
+    textTheme: ButtonTextTheme.primary,
+  ),
+  brightness: Brightness.light,
+  textTheme: TextTheme(
+    labelLarge: TextStyle(color: Colors.orangeAccent, fontSize: 30),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: Colors.orangeAccent,
+      backgroundColor: Colors.brown,
+    ),
+  ),
+  dropdownMenuTheme: DropdownMenuThemeData(
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.brown[50],
+      border: OutlineInputBorder(borderSide: BorderSide(color: Colors.orange)),
+    ),
+    textStyle: TextStyle(color: Colors.orangeAccent, fontSize: 18),
+  ),
+);

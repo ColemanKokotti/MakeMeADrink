@@ -8,13 +8,10 @@ class CocktailDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.teal, Colors.blueGrey],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+      decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
       ),
       child: FutureBuilder<Map<String, dynamic>>(
         future: CocktailDetailService().fetchCocktailDetails(id),
@@ -24,7 +21,7 @@ class CocktailDetailWidget extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error: ${snapshot.error}',
-                  style: const TextStyle(color: Colors.white)),
+                  style: TextStyle(color: theme.textTheme.labelLarge?.backgroundColor)),
             );
           } else {
             final details = snapshot.data!;
@@ -42,50 +39,50 @@ class CocktailDetailWidget extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     details['strDrink'],
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                        color: theme.textTheme.labelLarge?.backgroundColor),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     'Ingredients:',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                        color: theme.textTheme.labelLarge?.backgroundColor),
                   ),
                   const SizedBox(height: 5),
                   ...ingredients.map((ingredient) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     child: Row(
                       children: [
-                        const Icon(Icons.brightness_1,
-                            size: 8, color: Colors.white),
+                        Icon(Icons.brightness_1,
+                            size: 8, color: theme.iconTheme.color),
                         const SizedBox(width: 5),
                         Expanded(
                           child: Text(
                             ingredient,
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 16, color: theme.textTheme.labelLarge?.backgroundColor),
                           ),
                         ),
                       ],
                     ),
                   )),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     'Instructions:',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                        color: theme.textTheme.labelLarge?.backgroundColor),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     details['strInstructions'],
-                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                    style: TextStyle(fontSize: 16, color: theme.textTheme.labelLarge?.backgroundColor),
                   ),
                 ],
               ),

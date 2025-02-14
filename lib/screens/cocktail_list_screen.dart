@@ -3,12 +3,20 @@ import 'package:makemeadrink/api_calls/cocktail_data.dart';
 import 'package:makemeadrink/screens/auth/welcome_screen.dart';
 import 'package:makemeadrink/screens/cocktail_detailed_screen.dart';
 import 'package:makemeadrink/list_item/cocktail_list_item.dart';
+import 'package:makemeadrink/screens/settings_screen.dart';
 import 'package:makemeadrink/services/firebase_service.dart';
 
 class CocktailListScreen extends StatefulWidget {
   final List<Cocktail> cocktails;
+  final String selectedTheme;
+  final ValueChanged<String?> onThemeSelect;
 
-  const CocktailListScreen({super.key, required this.cocktails});
+  const CocktailListScreen({
+    super.key,
+    required this.cocktails,
+    required this.selectedTheme,
+    required this.onThemeSelect,
+  });
 
   @override
   _CocktailListScreenState createState() => _CocktailListScreenState();
@@ -22,7 +30,6 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
   bool _showAlcoholic = true;
   bool _showNonAlcoholic = true;
   String _selectedCategory = 'All';
-  final List<Color> screenBackgroundColor = [Colors.teal, Colors.blueGrey];
   final FirebaseService _firebaseService = FirebaseService();
 
   @override
@@ -45,8 +52,14 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.teal,
-          title: const Text('Filter Cocktails', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Text(
+            'Filter Cocktails',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.labelLarge?.color
+            ),
+          ),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return SingleChildScrollView(
@@ -54,9 +67,9 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                    Text('Alcohol Content:', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.labelLarge?.color)),
                     CheckboxListTile(
-                      title: const Text('Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      title: Text('Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.labelLarge?.color)),
                       value: _showAlcoholic,
                       onChanged: (bool? value) {
                         setState(() {
@@ -65,7 +78,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     CheckboxListTile(
-                      title: const Text('Non-Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      title: Text('Non-Alcoholic', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.labelLarge?.color)),
                       value: _showNonAlcoholic,
                       onChanged: (bool? value) {
                         setState(() {
@@ -74,11 +87,11 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    const Text('Category:', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                    Text('Category:', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.labelLarge?.color)),
                     DropdownButton<String>(
                       value: _selectedCategory,
                       isExpanded: true,
-                      dropdownColor: Colors.teal,
+                      dropdownColor: Theme.of(context).scaffoldBackgroundColor,
                       items: [
                         'All',
                         'Cocktail',
@@ -94,10 +107,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       ].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          child: Text(value, style: TextStyle(color: Theme.of(context).textTheme.labelLarge?.color)),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -105,7 +115,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                           _selectedCategory = newValue!;
                         });
                       },
-                    )
+                    ),
                   ],
                 ),
               );
@@ -113,7 +123,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Reset', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              child: Text('Reset', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.labelLarge?.color)),
               onPressed: () {
                 setState(() {
                   _showAlcoholic = true;
@@ -125,7 +135,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
               },
             ),
             TextButton(
-              child: const Text('Apply', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              child: Text('Apply', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.labelLarge?.color)),
               onPressed: () {
                 _filterCocktails();
                 Navigator.of(context).pop();
@@ -166,11 +176,12 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: Container(
-          decoration: BoxDecoration(color: Colors.teal),
+          decoration: BoxDecoration(color: theme.appBarTheme.backgroundColor),
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
@@ -178,11 +189,23 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
             title: const Text('Drink Time'),
             actions: [
               IconButton(
-                icon: const Icon(Icons.logout),
+                icon: Icon(Icons.logout, color: theme.iconTheme.color),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                    MaterialPageRoute(builder: (context) => WelcomeScreen(	selectedTheme: widget.selectedTheme,
+                      onThemeSelect: widget.onThemeSelect,)),
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.settings, color: theme.iconTheme.color),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsScreen(selectedTheme: widget.selectedTheme, onThemeSelect: widget.onThemeSelect),
+                    ),
                   );
                 },
               ),
@@ -193,7 +216,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: screenBackgroundColor,
+            colors: [theme.scaffoldBackgroundColor, theme.primaryColor],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -209,9 +232,9 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                       controller: searchController,
                       decoration: InputDecoration(
                         hintText: 'Search cocktails...',
-                        prefixIcon: const Icon(Icons.search),
+                        prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: theme.primaryColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -222,13 +245,12 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: theme.appBarTheme.backgroundColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.filter_list),
+                      icon: Icon(Icons.filter_list, color: theme.iconTheme.color),
                       onPressed: _showFilterDialog,
-                      color: Colors.teal,
                     ),
                   ),
                 ],
@@ -241,14 +263,14 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (_selectedIndex == 1 && favorites.isEmpty) ...[
-                      Icon(Icons.favorite_border, size: 64, color: Colors.white),
+                      Icon(Icons.favorite_border, size: 64, color: theme.iconTheme.color),
                       SizedBox(height: 16),
                       Text(
                         'Nessun cocktail preferito',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: theme.textTheme.labelLarge?.color,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -257,18 +279,18 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white70,
+                          color: theme.textTheme.labelLarge?.color,
                         ),
                       ),
                     ] else ...[
-                      Icon(Icons.search_off, size: 64, color: Colors.white),
+                      Icon(Icons.search_off, size: 64, color: theme.iconTheme.color),
                       SizedBox(height: 16),
                       Text(
                         'Nessun cocktail trovato',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: theme.textTheme.labelLarge?.color,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -276,7 +298,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         'Prova a modificare i filtri o il testo di ricerca',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white70,
+                          color: theme.textTheme.labelLarge?.color,
                         ),
                       ),
                     ],
@@ -318,7 +340,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 196, 164, 132),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: [

@@ -4,32 +4,43 @@ import 'package:makemeadrink/api_calls/cocktail_data.dart';
 import 'package:makemeadrink/screens/cocktail_list_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final String selectedTheme;
+  final ValueChanged<String?> onThemeSelect;
+
+  const SplashScreen({
+    Key? key,
+    required this.selectedTheme,
+    required this.onThemeSelect,
+  }) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
+  late String selectedTheme;
 
   @override
   void initState() {
     super.initState();
+    selectedTheme = widget.selectedTheme;
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-    _opacityAnimation =
-        Tween<double>(begin: 0.5, end: 1.0).animate(_controller);
-    _scaleAnimation =
-        Tween<double>(begin: 0.9, end: 1.1).animate(CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ));
+
+    _opacityAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(_controller);
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
     _loadData();
   }
 
@@ -41,14 +52,28 @@ class _SplashScreenState extends State<SplashScreen>
       final cocktails = parsed.map((json) => Cocktail.fromJson(json)).toList();
 
       await Future.delayed(const Duration(seconds: 3));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CocktailListScreen(cocktails: cocktails),
-        ),
-      );
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CocktailListScreen(
+              cocktails: cocktails,
+              selectedTheme: selectedTheme,
+              onThemeSelect: widget.onThemeSelect,
+            ),
+          ),
+        );
+      }
     } catch (e) {
-      print('Errore durante il caricamento dei dati: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Errore durante il caricamento dei dati: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -62,9 +87,12 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.teal, Colors.blueGrey],
+            colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).primaryColorDark,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -77,18 +105,19 @@ class _SplashScreenState extends State<SplashScreen>
                 scale: _scaleAnimation,
                 child: FadeTransition(
                   opacity: _opacityAnimation,
-                  child: const Text(
+                  child: Text(
                     'Drink Time',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              const CircularProgressIndicator(color: Colors.white),
+              CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ],
           ),
         ),
