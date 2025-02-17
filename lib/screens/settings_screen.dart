@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:makemeadrink/providers/theme_provider.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   final String selectedTheme;
   final ValueChanged<String?> onThemeSelect;
 
   const SettingsScreen({
-    Key? key,
+    super.key,
     required this.selectedTheme,
     required this.onThemeSelect,
-  }) : super(key: key);
+  });
+
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  late String selectedTheme;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedTheme = ThemeProvider.getCurrentTheme();
+  }
+
+  void _updateTheme(String? newTheme) {
+    if (newTheme != null) {
+      setState(() {
+        selectedTheme = newTheme;
+      });
+      ThemeProvider.selectTheme(selectedTheme);
+      widget.onThemeSelect(selectedTheme);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +47,7 @@ class SettingsScreen extends StatelessWidget {
           children: <Widget>[
             DropdownButton<String>(
               value: selectedTheme,
-              onChanged: (newTheme) {
-                onThemeSelect(newTheme);
-              },
+              onChanged: _updateTheme,
               style: TextStyle(
                 color: theme.textTheme.labelLarge?.color,
                 fontSize: theme.textTheme.labelLarge?.fontSize,

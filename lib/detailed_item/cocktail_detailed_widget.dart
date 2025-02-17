@@ -41,7 +41,6 @@ class CocktailDetailWidget extends StatelessWidget {
                     details['strDrink'],
                     style: TextStyle(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
                         color: theme.textTheme.labelLarge?.backgroundColor),
                     textAlign: TextAlign.center,
                   ),
@@ -50,7 +49,6 @@ class CocktailDetailWidget extends StatelessWidget {
                     'Ingredients:',
                     style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
                         color: theme.textTheme.labelLarge?.backgroundColor),
                   ),
                   const SizedBox(height: 5),
@@ -76,7 +74,6 @@ class CocktailDetailWidget extends StatelessWidget {
                     'Instructions:',
                     style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
                         color: theme.textTheme.labelLarge?.backgroundColor),
                   ),
                   const SizedBox(height: 5),

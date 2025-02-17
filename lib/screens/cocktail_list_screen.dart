@@ -6,6 +6,8 @@ import 'package:makemeadrink/list_item/cocktail_list_item.dart';
 import 'package:makemeadrink/screens/settings_screen.dart';
 import 'package:makemeadrink/services/firebase_service.dart';
 
+import '../providers/theme_provider.dart';
+
 class CocktailListScreen extends StatefulWidget {
   final List<Cocktail> cocktails;
   final String selectedTheme;
@@ -191,7 +193,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
               IconButton(
                 icon: Icon(Icons.logout, color: theme.iconTheme.color),
                 onPressed: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => WelcomeScreen(	selectedTheme: widget.selectedTheme,
                       onThemeSelect: widget.onThemeSelect,)),
@@ -204,7 +206,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SettingsScreen(selectedTheme: widget.selectedTheme, onThemeSelect: widget.onThemeSelect),
+                      builder: (context) => SettingsScreen(selectedTheme: ThemeProvider.getCurrentTheme(), onThemeSelect: widget.onThemeSelect,),
                     ),
                   );
                 },
@@ -269,7 +271,6 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         'Nessun cocktail preferito',
                         style: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
                           color: theme.textTheme.labelLarge?.color,
                         ),
                       ),
@@ -283,7 +284,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                         ),
                       ),
                     ] else ...[
-                      Icon(Icons.search_off, size: 64, color: theme.iconTheme.color),
+                      Icon(Icons.search_off, size: 64, color: theme.primaryColor),
                       SizedBox(height: 16),
                       Text(
                         'Nessun cocktail trovato',

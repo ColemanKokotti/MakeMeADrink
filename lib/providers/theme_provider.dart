@@ -8,10 +8,13 @@ import '/themes/materialDesign_theme.dart';
 
 class ThemeProvider {
   static ThemeData _currentTheme = defaultTheme;
+  static String _currentThemeName = 'default';
 
   static ThemeData get currentTheme => _currentTheme;
+  static String getCurrentTheme() => _currentThemeName;
 
   static void selectTheme(String themeName) {
+    _currentThemeName = themeName;
     switch (themeName) {
       case 'light':
         _currentTheme = materialDesignTheme;
@@ -22,10 +25,10 @@ class ThemeProvider {
       case 'pastel':
         _currentTheme = pastelTheme;
         break;
-      case'neon':
+      case 'neon':
         _currentTheme = neonFuturisticTheme;
         break;
-      case'vintage':
+      case 'vintage':
         _currentTheme = vintageRetroTheme;
         break;
       case 'default':
