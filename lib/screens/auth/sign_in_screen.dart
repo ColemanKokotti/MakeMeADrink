@@ -6,14 +6,10 @@ import 'package:makemeadrink/screens/splash_screen.dart';
 import '../../blocs/sign_in_bloc/sign_in_bloc.dart';
 
 class SignInScreen extends StatefulWidget {
-	final String selectedTheme;
-	final ValueChanged<String?> onThemeSelect;
 
 	const SignInScreen({
-		Key? key,
-		required this.selectedTheme,
-		required this.onThemeSelect,
-	}) : super(key: key);
+		super.key,
+	});
 
 	@override
 	State<SignInScreen> createState() => _SignInScreenState();
@@ -43,8 +39,6 @@ class _SignInScreenState extends State<SignInScreen> {
 			context,
 			MaterialPageRoute(
 				builder: (context) => SplashScreen(
-					selectedTheme: widget.selectedTheme,
-					onThemeSelect: widget.onThemeSelect,
 				),
 			),
 		);

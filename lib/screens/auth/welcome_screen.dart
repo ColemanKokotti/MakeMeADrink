@@ -8,13 +8,8 @@ import '../../blocs/sign_in_bloc/sign_in_bloc.dart';
 import '../../blocs/sign_up_bloc/sign_up_bloc.dart';
 
 class WelcomeScreen extends StatefulWidget {
-	final String selectedTheme;
-	final ValueChanged<String?> onThemeSelect;
-
 	const WelcomeScreen({
 		super.key,
-		required this.selectedTheme,
-		required this.onThemeSelect,
 	});
 
 	@override
@@ -166,8 +161,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
 										userRepository: context.read<AuthenticationBloc>().userRepository,
 									),
 									child: SignInScreen(
-										selectedTheme: widget.selectedTheme,
-										onThemeSelect: widget.onThemeSelect,
 									),
 								),
 								BlocProvider<SignUpBloc>(
@@ -175,8 +168,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
 										userRepository: context.read<AuthenticationBloc>().userRepository,
 									),
 									child: SignUpScreen(
-										selectedTheme: widget.selectedTheme,
-										onThemeSelect: widget.onThemeSelect,
 									),
 								),
 							],

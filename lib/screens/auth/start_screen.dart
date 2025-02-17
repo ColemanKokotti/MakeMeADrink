@@ -3,13 +3,9 @@ import 'package:makemeadrink/text/custom_text.dart';
 import 'package:makemeadrink/button/start_app_button.dart';
 
 class StartScreen extends StatelessWidget {
-  final String selectedTheme;
-  final ValueChanged<String?> onThemeSelect;
 
   const StartScreen({
     super.key,
-    required this.selectedTheme,
-    required this.onThemeSelect,
   });
 
   @override
@@ -31,8 +27,6 @@ class StartScreen extends StatelessWidget {
               height: 60,
             ),
             StartApp(
-              selectedTheme: selectedTheme,
-              onThemeSelect: onThemeSelect,
             ),
           ],
         ),

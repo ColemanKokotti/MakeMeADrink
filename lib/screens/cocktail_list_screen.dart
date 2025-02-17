@@ -6,18 +6,13 @@ import 'package:makemeadrink/list_item/cocktail_list_item.dart';
 import 'package:makemeadrink/screens/settings_screen.dart';
 import 'package:makemeadrink/services/firebase_service.dart';
 
-import 'package:makemeadrink/theme_bloc_providers//theme_provider.dart';
 
 class CocktailListScreen extends StatefulWidget {
   final List<Cocktail> cocktails;
-  final String selectedTheme;
-  final ValueChanged<String?> onThemeSelect;
 
   const CocktailListScreen({
     super.key,
     required this.cocktails,
-    required this.selectedTheme,
-    required this.onThemeSelect,
   });
 
   @override
@@ -195,8 +190,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => WelcomeScreen(	selectedTheme: widget.selectedTheme,
-                      onThemeSelect: widget.onThemeSelect,)),
+                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
                   );
                 },
               ),
@@ -206,7 +200,7 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SettingsScreen(selectedTheme: ThemeProvider.getCurrentTheme(), onThemeSelect: widget.onThemeSelect,),
+                      builder: (context) => SettingsScreen(),
                     ),
                   );
                 },
