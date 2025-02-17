@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 final ThemeData materialDesignTheme = ThemeData(
   primaryColor: Colors.blue,
+  brightness: Brightness.light,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.orange,
@@ -27,3 +28,4 @@ final ThemeData materialDesignTheme = ThemeData(
       textStyle: TextStyle(color: Colors.black, fontSize: 30)
   ),
 );
+

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 final ThemeData vintageRetroTheme = ThemeData(
   primaryColor: Colors.orange,
   scaffoldBackgroundColor: Colors.brown[50],
+  brightness: Brightness.light,
   appBarTheme: AppBarTheme(
     color: Colors.brown,
   ),
@@ -11,7 +12,6 @@ final ThemeData vintageRetroTheme = ThemeData(
     buttonColor: Colors.brown,
     textTheme: ButtonTextTheme.primary,
   ),
-  brightness: Brightness.light,
   textTheme: TextTheme(
     labelLarge: TextStyle(color: Colors.orangeAccent, fontSize: 30),
   ),
