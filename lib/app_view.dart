@@ -37,8 +37,6 @@ class _MyAppViewState extends State<MyAppView> {
 								userRepository: context.read<AuthenticationBloc>().userRepository,
 							),
 							child: SplashScreen(
-								selectedTheme: selectedTheme,
-								onThemeSelect: updateTheme,
 							),
 						);
 					} else if (state.status == AuthenticationStatus.unauthenticated) {
