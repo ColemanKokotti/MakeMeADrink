@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 final ThemeData neonFuturisticTheme = ThemeData(
   primaryColor: Colors.white,
   scaffoldBackgroundColor: Colors.black,
+  cardColor: Colors.pinkAccent,
   appBarTheme: AppBarTheme(
     color: Colors.black,
   ),

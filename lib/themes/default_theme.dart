@@ -8,10 +8,11 @@ final ThemeData defaultTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: MaterialStateProperty.all(Colors.pinkAccent),
-      backgroundColor: MaterialStateProperty.all(Colors.teal),
+      foregroundColor: WidgetStateProperty.all(Colors.pinkAccent),
+      backgroundColor: WidgetStateProperty.all(Colors.teal),
     ),
   ),
+  cardColor: Colors.pink[100],
   iconTheme: IconThemeData(color: Colors.teal[200]),
   buttonTheme: ButtonThemeData(
     buttonColor: Colors.tealAccent,

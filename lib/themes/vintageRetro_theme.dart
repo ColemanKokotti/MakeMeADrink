@@ -4,6 +4,7 @@ final ThemeData vintageRetroTheme = ThemeData(
   primaryColor: Colors.orange,
   scaffoldBackgroundColor: Colors.brown[50],
   brightness: Brightness.light,
+  cardColor: Colors.brown,
   appBarTheme: AppBarTheme(
     color: Colors.brown,
   ),

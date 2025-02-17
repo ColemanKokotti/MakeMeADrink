@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemeadrink/api_calls/cocktail_data.dart';
-
 
 class CocktailListItem extends StatefulWidget {
   final Cocktail cocktail;
@@ -32,7 +32,6 @@ class _CocktailListItemState extends State<CocktailListItem> {
     _loadIngredients();
   }
 
-
   Future<void> _loadIngredients() async {
     final ingredients = await Cocktail.fetchIngredientsFromApi(widget.cocktail.id);
     setState(() {
@@ -42,6 +41,11 @@ class _CocktailListItemState extends State<CocktailListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final backgroundColor = theme.cardColor;
+    final textColor = theme.textTheme.labelLarge?.color ?? Colors.black;
+    final favoriteIconColor = widget.isFavorite ? theme.primaryColor : theme.buttonTheme.colorScheme?.onPrimary ;
+
     return GestureDetector(
       onTap: widget.onTap,
       onLongPress: _toggleExpandedState,
@@ -51,12 +55,12 @@ class _CocktailListItemState extends State<CocktailListItem> {
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Colors.black,
+          color: backgroundColor,
         ),
         child: Material(
           elevation: _isExpanded ? 10.0 : 5.0,
           borderRadius: BorderRadius.circular(15),
-          color: Color.fromARGB(255, 176, 196, 171),
+          color: theme.cardColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -74,7 +78,7 @@ class _CocktailListItemState extends State<CocktailListItem> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: textColor,
                   ),
                 ),
               ),
@@ -88,12 +92,12 @@ class _CocktailListItemState extends State<CocktailListItem> {
                       padding: const EdgeInsets.all(4.0),
                       child: Row(
                         children: [
-                          Icon(Icons.brightness_1, size: 8),
+                          Icon(Icons.brightness_1, size: 8, color: theme.iconTheme.color),
                           SizedBox(width: 5),
                           Expanded(
                             child: Text(
                               ingredient,
-                              style: TextStyle(fontSize: 8),
+                              style: TextStyle(fontSize: 8, color: textColor),
                             ),
                           ),
                         ],
@@ -106,7 +110,7 @@ class _CocktailListItemState extends State<CocktailListItem> {
                 IconButton(
                   icon: Icon(
                     widget.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: widget.isFavorite ? Colors.red : Colors.black,
+                    color: favoriteIconColor,
                   ),
                   onPressed: () => widget.onFavoriteToggle(widget.cocktail.id),
                 ),

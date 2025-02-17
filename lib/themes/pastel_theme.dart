@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 final ThemeData pastelTheme = ThemeData(
-  primaryColor: Colors.pink[100],
+  primaryColor: Colors.pink[400],
   scaffoldBackgroundColor: Colors.pink[50],
+  cardColor: Colors.pink[100],
   appBarTheme: AppBarTheme(
     color: Colors.pink[100],
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: MaterialStateProperty.all(Colors.pinkAccent),
-      backgroundColor: MaterialStateProperty.all(Colors.pink[200]),
+      foregroundColor: WidgetStateProperty.all(Colors.pinkAccent),
+      backgroundColor: WidgetStateProperty.all(Colors.pink[200]),
     ),
   ),
   iconTheme: IconThemeData(color: Colors.pink[300]),

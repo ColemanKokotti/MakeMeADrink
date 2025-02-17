@@ -340,13 +340,21 @@ class _CocktailListScreenState extends State<CocktailListScreen> {
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/icon_list.png', height: 40, width: 40),
+            icon: Image.asset(
+              'assets/images/icon_list.png',
+              height: 40,
+              width: 40,
+            ),
             label: 'Cocktails',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/cocktail_favorites_icon.png', height: 40, width: 40),
+            icon: Image.asset(
+              'assets/images/cocktail_favorites_icon.png',
+              height: 40,
+              width: 40,
+            ),
             label: 'Favorites',
-          ),
+            ),
         ],
       ),
     );
