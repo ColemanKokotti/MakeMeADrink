@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makemeadrink/screens/settings_screen.dart';
-import 'package:makemeadrink/providers/theme_provider.dart';
+import 'package:makemeadrink/theme_bloc_providers//theme_provider.dart';
 
 class SettingsButton extends StatefulWidget {
   const SettingsButton({super.key});

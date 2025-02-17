@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:makemeadrink/providers/theme_provider.dart';
+import 'package:makemeadrink/theme_bloc_providers//theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   final String selectedTheme;

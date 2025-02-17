@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemeadrink/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:makemeadrink/providers/theme_provider.dart';
+import 'theme_bloc_providers/theme_provider.dart';
 import 'package:makemeadrink/screens/auth/start_screen.dart';
 import 'package:makemeadrink/screens/splash_screen.dart';
 import 'blocs/sign_in_bloc/sign_in_bloc.dart';
