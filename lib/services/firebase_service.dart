@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:makemeadrink/theme_bloc_providers/theme_state.dart';
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,7 +22,6 @@ class FirebaseService {
     }
   }
 
-  // Method to add/remove a favorite cocktail
   Future<void> toggleFavorite(String cocktailId, bool isFavorite) async {
     try {
       final userRef = _firestore.collection('users').doc(_userId);
@@ -36,6 +36,34 @@ class FirebaseService {
       }
     } catch (e) {
       print("Error updating favorites: $e");
+    }
+  }
+
+  Future<void> saveThemeToFirebase(ThemeType theme) async {
+    try {
+      final userRef = _firestore.collection('users').doc(_userId);
+      await userRef.set({
+        'theme': theme.name,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      print("Error saving theme: $e");
+    }
+  }
+
+  Future<ThemeType> getThemeFromFirebase() async {
+    try {
+      final doc = await _firestore.collection('users').doc(_userId).get();
+      if (doc.exists) {
+        final savedTheme = doc.data()?['theme'] ?? ThemeType.drink.name;
+        return ThemeType.values.firstWhere(
+              (e) => e.name == savedTheme,
+          orElse: () => ThemeType.drink,
+        );
+      }
+      return ThemeType.drink;
+    } catch (e) {
+      print("Error fetching theme: $e");
+      return ThemeType.drink;
     }
   }
 }

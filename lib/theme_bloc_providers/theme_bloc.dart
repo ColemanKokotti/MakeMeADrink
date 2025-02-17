@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makemeadrink/theme_bloc_providers/theme_event.dart';
 import 'package:makemeadrink/theme_bloc_providers/theme_state.dart';
+import '../services/firebase_service.dart';
 import '../themes/default_theme.dart';
 import '../themes/materialDesign_theme.dart';
 import '../themes/neon_theme.dart';
@@ -51,7 +52,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   void _onThemeChanged(ThemeChanged event, Emitter<ThemeState> emit) {
     final ThemeData newThemeData = _getThemeData(event.theme);
     emit(state.copyWith(currentTheme: event.theme, themeData: newThemeData));
-    _saveThemeToFirebase(event.theme);
+    final firebaseService = FirebaseService();
+    firebaseService.saveThemeToFirebase(event.theme);
   }
 
   ThemeData _getThemeData(ThemeType theme) {
